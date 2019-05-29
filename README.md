@@ -1,2 +1,4 @@
-# search-algorithm
-project oop - search algorithm - javafx
+## search-algorithm
+* Sequential Searching
+* Binary Searching
+* A* algorithm
