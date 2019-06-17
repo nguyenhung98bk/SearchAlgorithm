@@ -32,6 +32,7 @@ public class Wrapper<T extends Cell> {
 		// stopwatch
 		long time = System.nanoTime();
 		
+		@SuppressWarnings("rawtypes")
 		List<AStarCell> aStarPath = alg.getPath(g, s, e, allowDiagonals);
 		
 		// show time needed for the algorithm
@@ -53,7 +54,7 @@ public class Wrapper<T extends Cell> {
 		for( int row=0; row < grid.getRows(); row++) {
 			for( int col=0; col < grid.getColumns(); col++) {
 				
-				T cell = (T) grid.getCell(col, row);
+				T cell = extracted(grid, row, col);
 				
 				g.setCell( cell, col, row, cell.isTraversable());
 				
@@ -67,19 +68,25 @@ public class Wrapper<T extends Cell> {
 			}
 		}
 	}
+
+	private T extracted(Grid grid, int row, int col) {
+		T cell = (T) grid.getCell(col, row);
+		return cell;
+	}
 	
 	/**
 	 * Unwrap A* cells into visualization cells. 
 	 * @param path
 	 * @return
 	 */
-	private List<T> unmarshal( Collection<AStarCell> path) {
+	private List<T> unmarshal( @SuppressWarnings("rawtypes") Collection<AStarCell> path) {
 
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMaximumFractionDigits(1);
 		
 		List<T> list = new ArrayList<>();
-		for( AStarCell c: path) {
+		for( AStarCell<?> c: path) {
+			@SuppressWarnings("unchecked")
 			T obj = (T) c.getObject();
 			obj.setTextF( nf.format( c.getF()));
 			obj.setTextG( nf.format( c.getG()));

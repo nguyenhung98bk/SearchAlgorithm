@@ -3,8 +3,13 @@ package sequentialSearch;
 import sequentialSearch.SequentialSearch;
 
 import java.io.IOException;
+import java.net.URL;
+
 import javafx.util.Duration;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+import javafx.fxml.Initializable;
 
 import shape.*;
 import javafx.animation.KeyFrame;
@@ -25,7 +30,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class SequentialSearchController {
+public class SequentialSearchController implements Initializable {
 	
 	@FXML
 	private AnchorPane paneShow;
@@ -41,7 +46,7 @@ public class SequentialSearchController {
 	private AnchorPane paneRun;
 	
 	int array[]=new int[20];
-	int size;
+	int size=10;
 	int search;
 	int x=100,y=0;// xac dinh toa do cua square theo truc Oxy
 	//tao object newSquare, square
@@ -49,6 +54,25 @@ public class SequentialSearchController {
 	Square square = new Square();
 	//tao arrayList arraySquare de luu danh sach object Square
 	ArrayList<Square> arraySquare = new ArrayList<>();
+	
+	int defaultArray[] = {23,12,4,1,6,87,54,89,5,9};
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		int xzz = 100;
+		for(int i=0;i<10;i++) {
+			Square newSquare = new Square(defaultArray[i],xzz,0);
+			arraySquare.add(newSquare);
+			xzz+=80;
+		}
+		for(Square square: arraySquare) {
+			StackPane stackPane = new StackPane();
+			stackPane.getChildren().addAll(square, square.getText());
+			stackPane.setLayoutX(square.getXx());
+			stackPane.setLayoutY(square.getYy());
+			paneShow.getChildren().add(stackPane);
+		}
+	}
 	
 	//ham goi khi nhap mang
 	public void ArrayInput(ActionEvent event) {
@@ -98,8 +122,8 @@ public class SequentialSearchController {
 	        timeline.setCycleCount(Timeline.INDEFINITE);
 	        timeline.setAutoReverse(true);
 	        //create a keyValue with factory: scaling the square 2times
-	        KeyValue keyValueX = new KeyValue(arraySquare.get(result).scaleXProperty(), 1.25);
-	        KeyValue keyValueY = new KeyValue(arraySquare.get(result).scaleYProperty(), 1.25);
+	        KeyValue keyValueX = new KeyValue(arraySquare.get(result).scaleXProperty(), 1.5);
+	        KeyValue keyValueY = new KeyValue(arraySquare.get(result).scaleYProperty(), 1.5);
 	        //create a keyFrame, the keyValue is reached at time 2s
 	        Duration duration = Duration.millis(1000);
 	        KeyFrame keyFrame = new KeyFrame(duration , keyValueX, keyValueY);
@@ -109,54 +133,58 @@ public class SequentialSearchController {
 		}
 		 
 		//Drawing a Square
-		  if(result>=0) {
-			  square = new Square(arraySquare.get(result).getNumber(),100,100);
-		  }else {
-			  square = new Square(search,100,100);
-		  }
+		if(square.getNumber()!=null) {
+			square.delete();
+		}
+		
+		if(result>=0) {
+			square = new Square(arraySquare.get(result).getNumber(),100,100);
+		}else {
+			square = new Square(search,100,100);
+		}
 	      
-	      square.setWidth(60);
-	      square.setHeight(60);
-	      square.setFill(Color.web("#B9FC90"));
+	    square.setWidth(60);
+	    square.setHeight(60);
+	    square.setFill(Color.web("#B9FC90"));
 	      
-	      StackPane stackPane = new StackPane();
-		  stackPane.getChildren().addAll(square,square.getText());
-		  stackPane.setLayoutX(100);
-		  stackPane.setLayoutY(100);
-		  paneShow.getChildren().add(stackPane);
+	    StackPane stackPane = new StackPane();
+		stackPane.getChildren().addAll(square,square.getText());
+		stackPane.setLayoutX(100);
+		stackPane.setLayoutY(100);
+		paneShow.getChildren().add(stackPane);
 			
-	      TranslateTransition translateTransition = new TranslateTransition(); 
+	    TranslateTransition translateTransition = new TranslateTransition(); 
 	      
-	      //Setting the duration of the transition  
-	      translateTransition.setDuration(Duration.millis(4000)); 
-	      translateTransition.setNode(square); 
-	      //Setting the value of the transition along the x axis. 
-	      if(result>=0) {
-	    	  translateTransition.setByX(80*result);
-	      }else {
-	    	  translateTransition.setByX(80*size);
-	      }
+	    //Setting the duration of the transition  
+	    translateTransition.setDuration(Duration.millis(4000)); 
+	    translateTransition.setNode(square); 
+	    //Setting the value of the transition along the x axis. 
+	    if(result>=0) {
+	    	translateTransition.setByX(80*result);
+	    }else {
+	    	translateTransition.setByX(80*size);
+	    }
 	       
-	      //Setting the cycle count for the transition 
-	      translateTransition.setCycleCount(50); 
-	      //Setting auto reverse value to false 
-	      translateTransition.setAutoReverse(false); 
+	    //Setting the cycle count for the transition 
+	    translateTransition.setCycleCount(50); 
+	    //Setting auto reverse value to false 
+	    translateTransition.setAutoReverse(false); 
 	      
-	      //Playing the animation 
-	      translateTransition.play(); 
+	    //Playing the animation 
+	    translateTransition.play(); 
 	      
-	      //Cho text chay
-	      TranslateTransition translateTransition2 = new TranslateTransition(); 
-	      translateTransition2.setDuration(Duration.millis(4000)); 
-	      translateTransition2.setNode(square.getText()); 
-	      if(result>=0) {
-	    	  translateTransition2.setByX(80*result);
-	      }else {
-	    	  translateTransition2.setByX(80*size);
-	      }
-	      translateTransition2.setCycleCount(50); 
-	      translateTransition2.setAutoReverse(false); 
-	      translateTransition2.play(); 
+	    //Cho text chay
+	    TranslateTransition translateTransition2 = new TranslateTransition(); 
+	    translateTransition2.setDuration(Duration.millis(4000)); 
+	    translateTransition2.setNode(square.getText()); 
+	    if(result>=0) {
+	    	translateTransition2.setByX(80*result);
+	    }else {
+	    	translateTransition2.setByX(80*size);
+	    }
+	    translateTransition2.setCycleCount(50); 
+	    translateTransition2.setAutoReverse(false); 
+	    translateTransition2.play(); 
 	}
 	
 	int xnext=100,ynext=100;
@@ -210,19 +238,31 @@ public class SequentialSearchController {
 	}
 	
 	public void reset(ActionEvent event) {
-		System.out.println("Hello");
 		for(Square square: arraySquare) {
 			square.delete();
 		}
 		arraySquare.clear();
 		x=100;xnext=100;dem=0;
-		square.delete();
+		if(square.getNumber()!=null) {
+			square.delete();
+		}
 		if(newSquare.getNumber()!=null) {
 			newSquare.delete();
 		}
 		
 		nextButton.setVisible(true);
 		showKetQua.setText("");
+	}
+	
+	public void delete(ActionEvent event) {
+		reset(event);
+		if(arrayTextField.getText().equals("")) {
+			URL location = null;
+			ResourceBundle resources = null;
+			initialize(location, resources);
+		}else {
+			ArrayInput(event);
+		}
 	}
 	
 	//tro ve scene truoc

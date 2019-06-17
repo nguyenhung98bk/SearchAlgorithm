@@ -9,9 +9,12 @@ import java.util.Set;
  */
 public class AStarSnapshot {
 
+	@SuppressWarnings("rawtypes")
 	Set<AStarCell> openset = new HashSet<>();
+	@SuppressWarnings("rawtypes")
 	Set<AStarCell> closedset = new HashSet<>();
 	
+	@SuppressWarnings("rawtypes")
 	public AStarSnapshot( Collection<AStarCell> open, Collection<AStarCell> closed) {
 		
 		for( AStarCell cell: open) {
@@ -22,18 +25,22 @@ public class AStarSnapshot {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Set<AStarCell> getOpenset() {
 		return openset;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setOpenset(Set<AStarCell> openset) {
 		this.openset = openset;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Set<AStarCell> getClosedset() {
 		return closedset;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setClosedset(Set<AStarCell> closedset) {
 		this.closedset = closedset;
 	}
